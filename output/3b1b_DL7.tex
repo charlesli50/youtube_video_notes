@@ -1,0 +1,104 @@
+
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+\title{Lecture Notes}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+\section*{Lecture Notes on Understanding Multi-Layer Perceptrons in Large Language Models}
+
+\subsection*{Introduction}
+\begin{itemize}
+\item This lecture explores how large language models (LLMs) store knowledge, particularly focusing on the role of multi-layer perceptrons (MLPs) in this process.
+\item The goal is to demystify the computations within MLPs and illustrate how they can encode specific facts, using the example of Michael Jordan and basketball.
+\end{itemize}
+
+\subsection*{Understanding Large Language Models}
+\subsubsection*{The Basics of Language Models}
+\begin{itemize}
+\item Language models are trained to predict the next word in a sequence based on the preceding context.
+\item They operate on text that is tokenized into smaller units (tokens), each represented by high-dimensional vectors.
+\end{itemize}
+
+\subsubsection*{The Role of Multi-Layer Perceptrons}
+\begin{itemize}
+\item MLPs are crucial components of the architecture of transformers, which are the backbone of modern AI models.
+\item They perform computations that involve matrix multiplications and non-linear transformations, which are essential for encoding complex relationships in data.
+\end{itemize}
+
+\subsubsection*{High-Dimensional Space}
+\begin{itemize}
+\item Vectors in LLMs exist in high-dimensional spaces where different directions can represent various meanings or features.
+\item For example, the relationship between the embeddings of "woman" and "man" illustrates how gender information can be encoded in this space.
+\end{itemize}
+
+\subsubsection*{Key Concept: Information Encoding}
+\begin{itemize}
+\item Each vector must encode more than just the meaning of a single word; it needs to incorporate contextual information and general knowledge learned during training.
+\item MLPs provide the capacity to store facts, such as the relationship between Michael Jordan and basketball.
+\end{itemize}
+
+\subsection*{The Mechanics of Multi-Layer Perceptrons}
+\subsubsection*{Step-by-Step Computation}
+\begin{itemize}
+\item The input vector representing a token (e.g., "Michael Jordan") undergoes a series of operations within the MLP.
+\item Each vector is processed independently, allowing for parallel computations.
+\end{itemize}
+
+\subsubsection*{Matrix Multiplication}
+\begin{itemize}
+\item The first operation involves multiplying the input vector by a large matrix filled with learned parameters (weights).
+\item This matrix can be thought of as containing various "questions" that probe different features of the input vector.
+\end{itemize}
+
+\subsubsection*{Non-Linear Activation: ReLU}
+\begin{itemize}
+\item After the linear transformation, a non-linear activation function, typically the Rectified Linear Unit (ReLU), is applied.
+\item ReLU outputs zero for negative values and retains positive values, effectively mimicking the behavior of an AND gate.
+\end{itemize}
+
+\subsubsection*{Down Projection and Final Output}
+\begin{itemize}
+\item The output from the ReLU is then multiplied by another matrix (down projection) and combined with a bias term.
+\item The final output vector is the sum of the transformed vector and the original input vector, allowing the model to encode additional information.
+\end{itemize}
+
+\subsubsection*{Example: Encoding "Michael Jordan Plays Basketball"}
+\begin{itemize}
+\item The MLP is set up to recognize the specific fact that "Michael Jordan plays basketball" by associating specific directions in the high-dimensional space with each component of the fact.
+\item The computations ensure that if the input vector encodes both "Michael" and "Jordan," the output will include the direction representing "basketball."
+\end{itemize}
+
+\subsection*{Additional Analysis}
+\begin{itemize}
+\item The operations within MLPs are foundational to how LLMs function, but the interpretation of individual neurons is complex.
+\item The concept of superposition suggests that neurons may not represent single features but rather combinations of features, complicating the interpretability of these models.
+\item Understanding the high-dimensional nature of the embeddings helps explain why LLMs can scale effectively, as they can represent more features than there are dimensions in the space.
+\end{itemize}
+
+\subsection*{Conclusion}
+\begin{itemize}
+\item The lecture provided a detailed examination of how MLPs in large language models process information and store facts.
+\item Key takeaways include the significance of high-dimensional spaces, the role of matrix multiplications, and the importance of non-linear transformations in encoding knowledge.
+\end{itemize}
+
+\subsubsection*{General Tips}
+\begin{itemize}
+\item To better understand LLMs, focus on the interplay between linear and non-linear operations within MLPs.
+\item Consider exploring the implications of high-dimensional spaces in machine learning and how they can influence model performance and interpretability.
+\item Engage with practical examples and visualizations to solidify your understanding of these complex concepts.
+\end{itemize}
+\end{document}
