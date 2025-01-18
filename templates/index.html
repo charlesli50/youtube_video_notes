@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Video to PDF</title>
+  </head>
+  <body>
+    <h1>Upload a YouTube Video URL</h1>
+    <form action="/process" method="post">
+      <label for="youtube_url">YouTube Video URL:</label><br />
+      <input
+        type="url"
+        id="youtube_url"
+        name="youtube_url"
+        required
+      /><br /><br />
+
+      <label for="pdf_name">Name for the PDF:</label><br />
+      <input type="text" id="pdf_name" name="pdf_name" required /><br /><br />
+
+      <button type="submit">Generate PDF</button>
+    </form>
+  </body>
+</html>
