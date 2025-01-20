@@ -1,8 +1,6 @@
 
 from youtube_transcript_api import YouTubeTranscriptApi
-from sklearn.feature_extraction.text import TfidfVectorizer
 import pandas as pd
-from transformers import pipeline
 import numpy as np
 from pytubefix import YouTube
 from Katna.video import Video
@@ -27,13 +25,10 @@ print("FFmpeg Path:", os.environ["IMAGEIO_FFMPEG_EXE"])
 
 def download_video(youtube_url, save_title, save_path="downloads/"):
     try:
-        # Create YouTube object
         yt = YouTube(youtube_url)
 
-        # Select the highest resolution stream
         stream = yt.streams.get_highest_resolution()
 
-        # Download the video
         print(f"Downloading: {yt.title}")
         stream.download(output_path=save_path, filename=save_title)
         print(f"Downloaded successfully to {save_path}")
@@ -186,41 +181,32 @@ def save_summary_to_latex(input_text, output_file):
 \begin{document}
 \maketitle
 """
-    # End of LaTeX document
     end = r"\end{document}"
 
-    # Convert headers to LaTeX sections
+    # convert latex headers
     converted_text = re.sub(r"^# (.+)$", r"\\section*{\1}", input_text, flags=re.MULTILINE)
     converted_text = re.sub(r"^## (.+)$", r"\\subsection*{\1}", converted_text, flags=re.MULTILINE)
     converted_text = re.sub(r"^### (.+)$", r"\\subsubsection*{\1}", converted_text, flags=re.MULTILINE)
 
-
-    # Escape special LaTeX characters
     converted_text = sanitize_for_latex(converted_text)
-    # Fix math environments
 
-    # Handle itemize environments for bullet points
+    # handle itemize
     def wrap_itemize(match):
         items = match.group(1).strip().split("\n")
         formatted_items = "\n".join([f"\\item {item[2:].strip()}" for item in items if item.strip()])
         return f"\\begin{{itemize}}\n{formatted_items}\n\\end{{itemize}}"
-
-    # Match groups of lines starting with "- "
     converted_text = re.sub(r"(?m)(^- .+(?:\n- .+)*)", wrap_itemize, converted_text)
 
-    # Ensure math environments are properly handled
+	#handle math environment
     converted_text = re.sub(r"\\\[([^\\]+)\\\]", r"\\[\1\\]", converted_text)
     converted_text = re.sub(r"\\\((.+?)\\\)", r"$\1$", converted_text)
 
-    # Ensure subscripts and superscripts are properly set in math mode
     converted_text = re.sub(r"([a-zA-Z])_([a-zA-Z0-9]+)", r"{\1_\{\2\}}", converted_text)
     converted_text = re.sub(r"([a-zA-Z])\^([a-zA-Z0-9]+)", r"{\1^\{\2\}}", converted_text)
 
-    # Combine parts into the LaTeX document
     latex_content = f"{preamble}{converted_text}\n{end}"
     # print(latex_content)
 
-    # Write to the output file
     with open(output_file, 'w') as tex_file:
         tex_file.write(latex_content)
 
@@ -248,11 +234,10 @@ def tex_to_pdf(tex_file, output_dir=None, keyframe_paths=[]):
     )
     keyframes_tex = f"\\begin{{center}}\n{keyframes_tex}\n\\end{{center}}\n"
 
-    # Locate the section header and insert the keyframes under it
+    # insert keyframes
     section_marker = r"\section*{"
     insert_position = content.find(section_marker)
     if insert_position != -1:
-        # Find the end of the section header
         section_end = content.find("}", insert_position) + 1
         content = content[:section_end] + "\n" + keyframes_tex + content[section_end:]
     else:
@@ -278,15 +263,11 @@ def tex_to_pdf(tex_file, output_dir=None, keyframe_paths=[]):
             raise FileNotFoundError("PDF generation failed. Check the LaTeX log for errors.")
     except subprocess.CalledProcessError as e:
         print("Error during LaTeX compilation:")
-        print(e.stdout)  # Print LaTeX log output for debugging
+        print(e.stdout) 
         raise
 
 
 def pipeline(youtube_url, pdf_name, file_title, num_keyframes=3, save_title="video.mp4", ffmpeg_path="/opt/homebrew/bin/ffmpeg"):
-    """
-    input: video url
-    output: summary of the video in pdf form with keyframes and intermediate files
-    """
     try:
         # Define output directories
         base_output_dir = f"outputs/{pdf_name}"

@@ -3,9 +3,7 @@ import os
 from make_pdf import pipeline
 
 app = Flask(__name__)
-UPLOAD_FOLDER = 'uploads'
 RESULT_FOLDER = 'outputs'
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(RESULT_FOLDER, exist_ok=True)
 
 @app.route('/')
@@ -18,11 +16,9 @@ def process():
     pdf_name = request.form['pdf_name']
 
     try:
-        # Run the pipeline
         file_title = pdf_name.replace(' ', '_')
         pipeline(youtube_url, pdf_name, file_title)
 
-        # Path to the generated PDF
         pdf_path = os.path.join(RESULT_FOLDER, pdf_name, f"{file_title}/{file_title}.pdf")
         print(pdf_path)
         if os.path.exists(pdf_path):
